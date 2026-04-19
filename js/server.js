@@ -14,13 +14,13 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-app.use(cors());
+
 const app = express();
 app.use(bodyParser.json());
 
 // Enable JSON parsing
 app.use(express.json());
-
+app.use(cors());
 // ✅ One‑line CORS setup
 app.use(require('cors')());
 
