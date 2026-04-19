@@ -1,12 +1,16 @@
 // config.js
 // Centralized configuration for SkillBridge frontend
 
-// Change this once and all fetch calls will use the same base URL
-// For local development:
-const API_BASE = "http://localhost:5000";  
+// Detect environment automatically
+let API_BASE;
 
-// For deployment (example):
-// const API_BASE = "https://skillbridge.onrender.com";
+if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
+  // Local development
+  API_BASE = "http://localhost:5000";
+} else {
+  // Production (Render deployment)
+  API_BASE = "https://skillbridge-jrc3.onrender.com";
+}
 
 // Export for use in other scripts
 export { API_BASE };
