@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Complete Your Profile</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="bg-gradient d-flex align-items-center justify-content-center">
+
+<div class="login-card w-100">
+  <!-- Branding -->
+  <div class="text-center mb-4">
+    <img src="../assets/logo.png" alt="SkillBridge Logo" class="logo">
+    <h3>Complete Your Profile</h3>
+    <p class="text-muted">Help us understand your career journey</p>
+  </div>
+
+  <!-- Progress Bar -->
+  <div class="mb-4">
+    <label id="progressLabel" class="form-label">Step 1 of 3</label>
+    <div class="progress">
+      <div id="progressBar" class="progress-bar" role="progressbar" style="width: 33%">33%</div>
+    </div>
+  </div>
+
+  <!-- Wizard Steps -->
+  <form class="needs-validation" novalidate id="profileSetupForm">
+    <!-- Step 1 -->
+    <div class="step" id="step1">
+      <h5>Tell us about your current position</h5>
+      <div class="mb-3">
+        <label for="currentRole" class="form-label">Current Role / Job Title</label>
+        <input type="text" class="form-control" id="currentRole" placeholder="e.g., Software Developer, Marketing Manager" required>
+        <div class="invalid-feedback">Current role is required.</div>
+      </div>
+      <div class="mb-3">
+        <label for="experience" class="form-label">Years of Experience</label>
+        <select class="form-select" id="experience" required>
+          <option value="">Select...</option>
+          <option>0–1 years</option>
+          <option>1–3 years</option>
+          <option>3–5 years</option>
+          <option>5–7 years</option>
+          <option>7–10 years</option>
+          <option>10+ years</option>
+        </select>
+        <div class="invalid-feedback">Please select your experience.</div>
+      </div>
+      <div class="mb-3">
+        <label for="industry" class="form-label">Industry</label>
+        <select class="form-select" id="industry" required>
+          <option value="">Select...</option>
+          <option>Technology & Software</option>
+          <option>Finance & Banking</option>
+          <option>Healthcare</option>
+          <option>Education</option>
+          <option>Marketing & Advertising</option>
+          <option>Manufacturing</option>
+          <option>Retail & E-commerce</option>
+          <option>Consulting</option>
+          <option>Other</option>
+        </select>
+        <div class="invalid-feedback">Please select your industry.</div>
+      </div>
+      <button type="button" class="btn-skillbridge w-100" id="next1">Next</button>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="step d-none" id="step2">
+      <h5>What are your current skills?</h5>
+      <div class="mb-3">
+        <label for="skillInput" class="form-label">Add Your Skills</label>
+        <div class="input-group">
+          <input type="text" class="form-control" id="skillInput" placeholder="e.g., JavaScript, Project Management, SEO">
+          <button class="btn-skillbridge" type="button" id="addSkillBtn">Add</button>
+        </div>
+        <div id="skillsList" class="mt-2">
+            <div class="invalid-feedback d-block" id="skillsError" style="display:none;">Please add at least one skill.</div>
+        </div>
+      </div>
+      <div class="d-flex justify-content-between mt-4">
+        <button type="button" class="btn btn-outline-secondary w-50 me-2" id="back2">Back</button>
+        <button type="button" class="btn-skillbridge w-50 ms-2" id="next2">Next</button>
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="step d-none" id="step3">
+      <h5>What are your career goals?</h5>
+      <div class="mb-3">
+        <label for="targetRole" class="form-label">Target Role / Dream Job</label>
+        <input type="text" class="form-control" id="targetRole" placeholder="e.g., Senior Software Engineer, Product Manager" required>
+        <div class="invalid-feedback">Target role is required.</div>
+      </div>
+      <div class="mb-3">
+        <label for="goalSkillInput" class="form-label">Skills You Want to Learn (optional)</label>
+        <div class="input-group">
+          <input type="text" class="form-control" id="goalSkillInput" placeholder="e.g., Machine Learning, Leadership, Data Analysis">
+          <button class="btn-skillbridge" type="button" id="addGoalSkillBtn">Add</button>
+        </div>
+        <div id="goalSkillsList" class="mt-2"></div>
+      </div>
+      <div class="d-flex justify-content-between mt-4">
+        <button type="button" class="btn btn-outline-secondary w-50 me-2" id="back3">Back</button>
+        <button type="submit" class="btn-skillbridge w-50 ms-2">Complete Profile</button>
+      </div>
+    </div>
+  </form>
+
+  <!-- Footer -->
+  <div class="footer-link mt-4">
+    <p>© 2026 SkillBridge | <a href="help.html">Help</a></p>
+  </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Custom JS -->
+<script src="../js/validation.js"></script>
+<script>
+  // Step navigation
+  const steps = ["step1","step2","step3"];
+  let currentStep = 0;
+
+  function showStep(index) {
+    steps.forEach((id,i)=>{
+      document.getElementById(id).classList.toggle("d-none", i!==index);
+    });
+    const progressBar = document.getElementById("progressBar");
+    const progressLabel = document.getElementById("progressLabel");
+    const percentages = ["33%","67%","100%"];
+    progressBar.style.width = percentages[index];
+    progressBar.textContent = percentages[index];
+    progressLabel.textContent = `Step ${index+1} of 3`;
+  }
+
+  document.getElementById("next1").addEventListener("click", ()=>{currentStep=1;showStep(currentStep);});
+  document.getElementById("back2").addEventListener("click", ()=>{currentStep=0;showStep(currentStep);});
+  document.getElementById("next2").addEventListener("click", ()=>{currentStep=2;showStep(currentStep);});
+  document.getElementById("back3").addEventListener("click", ()=>{currentStep=1;showStep(currentStep);});
+
+  // Skills tag system (Step 2)
+  const addSkillBtn = document.getElementById('addSkillBtn');
+  const skillInput = document.getElementById('skillInput');
+  const skillsList = document.getElementById('skillsList');
+  let skills = [];
+  addSkillBtn.addEventListener('click', () => {
+    const skill = skillInput.value.trim();
+    if (skill) {
+      skills.push(skill);
+      renderSkills();
+      skillInput.value = '';
+    }
+  });
+  function renderSkills() {
+    skillsList.innerHTML = '';
+    if (skills.length > 0) {
+      const title = document.createElement('p');
+      title.textContent = `Your Skills (${skills.length})`;
+      title.classList.add('fw-bold');
+      skillsList.appendChild(title);
+      skills.forEach((s,index)=>{
+        const tag = document.createElement('span');
+        tag.className = 'badge bg-primary me-2 mb-2';
+        tag.textContent = s;
+        skillsList.appendChild(tag);
+      });
+    }
+  }
+
+    // Goal skills tag system (Step 3)
+  const addGoalSkillBtn = document.getElementById('addGoalSkillBtn');
+  const goalSkillInput = document.getElementById('goalSkillInput');
+  const goalSkillsList = document.getElementById('goalSkillsList');
+  let goalSkills = [];
+
+  addGoalSkillBtn.addEventListener('click', () => {
+    const skill = goalSkillInput.value.trim();
+    if (skill) {
+      goalSkills.push(skill);
+      renderGoalSkills();
+      goalSkillInput.value = ''; // clear input after adding
+    }
+  });
+
+  function renderGoalSkills() {
+    goalSkillsList.innerHTML = '';
+    if (goalSkills.length > 0) {
+      const title = document.createElement('p');
+      title.textContent = `Target Skills (${goalSkills.length})`;
+      title.classList.add('fw-bold');
+      goalSkillsList.appendChild(title);
+
+      goalSkills.forEach((s,index)=>{
+        const tag = document.createElement('span');
+        tag.className = 'badge bg-primary me-2 mb-2';
+        tag.textContent = s;
+        goalSkillsList.appendChild(tag);
+      });
+    }
+  }
+
+
+  // Form submission
+  document.getElementById('profileSetupForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    const targetRole = document.getElementById('targetRole');
+    if (!targetRole.value.trim()) {
+      targetRole.classList.add('is-invalid');
+      return;
+    }
+    alert("✅ Profile completed successfully! Redirecting to dashboard...");
+    window.location.href = "dashboard.html";
+  });
+
+  // Initialize first step
+  showStep(currentStep);
+</script>
+</body>
+</html>
+

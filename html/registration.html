@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SkillBridge Registration</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<div class="login-card">
+  <div class="text-center mb-4">
+    <img src="../assets/logo.png" alt="SkillBridge Logo" class="logo">
+<h3>SkillBridge</h3>
+<p class="text-muted">Create your account to start bridging skill gaps</p>
+
+  </div>
+
+  <!-- Registration Form -->
+  <form class="needs-validation" novalidate id="registrationForm">
+    <div class="mb-3">
+      <label for="fullName" class="form-label">Full Name</label>
+      <input type="text" class="form-control" id="fullName" required>
+      <div class="invalid-feedback">Full name is required.</div>
+    </div>
+    <div class="mb-3">
+      <label for="email" class="form-label">Email Address</label>
+      <input type="email" class="form-control" id="email" required>
+      <div class="invalid-feedback">Valid email is required.</div>
+    </div>
+    <div class="mb-3">
+      <label for="password" class="form-label">Password</label>
+      <input type="password" class="form-control" id="password" required>
+      <div class="invalid-feedback">Password is required.</div>
+    </div>
+    <div class="mb-3">
+      <label for="confirmPassword" class="form-label">Confirm Password</label>
+      <input type="password" class="form-control" id="confirmPassword" required>
+      <div class="invalid-feedback">Please confirm your password.</div>
+    </div>
+    <button type="submit" class="btn-skillbridge">Create Account</button>
+  </form>
+
+  <!-- Footer -->
+  <div class="footer-link">
+    <a href="index.html">Already have an account? Sign in</a>
+
+  </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Custom JS -->
+<script src="../js/validation.js"></script>
+<script>
+  // Extra password match validation
+  document.getElementById('registrationForm').addEventListener('submit', function (event) {
+    const password = document.getElementById('password');
+    const confirmPassword = document.getElementById('confirmPassword');
+
+    if (password.value !== confirmPassword.value) {
+      event.preventDefault();
+      event.stopPropagation();
+      confirmPassword.setCustomValidity("Passwords do not match");
+    } else {
+      confirmPassword.setCustomValidity("");
+    }
+  });
+
+document.getElementById('registrationForm').addEventListener('submit', async function (event) {
+  event.preventDefault();
+  const name = document.getElementById('fullName').value;
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
+  const confirmPassword = document.getElementById('confirmPassword').value;
+
+  if (password !== confirmPassword) {
+    alert("Passwords do not match");
+    return;
+  }
+
+  const res = await fetch('http://localhost:5000/api/register', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name, email, password })
+  });
+
+  const data = await res.json();
+  if (res.ok) {
+    alert('Registration successful!');
+    window.location.href = 'login.html';
+  } else {
+    alert(data.error);
+  }
+});
+
+</script>
+</body>
+</html>

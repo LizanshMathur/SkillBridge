@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="careerApp">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Career Development Dashboard</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="../css/style.css">
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body ng-controller="DashboardController">
+
+<div class="container-fluid">
+  <div class="row">
+    <!-- Sidebar -->
+    <nav class="col-md-3 col-lg-2 sidebar">
+      <img src="../assets/logo.png" alt="SkillBridge Logo" class="logo mb-3">
+      <a href="#" ng-class="{active: section==='overview'}" ng-click="setSection('overview')">Overview</a>
+      <a href="#" ng-class="{active: section==='assessment'}" ng-click="setSection('assessment')">Skill Assessment</a>
+      <a href="#" ng-class="{active: section==='goals'}" ng-click="setSection('goals')">Career Goals</a>
+      <a href="#" ng-class="{active: section==='gap'}" ng-click="setSection('gap')">Gap Analysis</a>
+      <a href="#" ng-class="{active: section==='roadmap'}" ng-click="setSection('roadmap')">Learning Roadmap</a>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="col-md-9 col-lg-10 content">
+      <!-- Overview -->
+      <div ng-show="section==='overview'">
+        <h2>Track your career development progress</h2>
+        <div class="row mt-4">
+          <div class="col-md-4">
+            <div class="metric-box">
+              <h4>Skills Assessed</h4>
+              <p>{{skillsAssessed}}</p>
+              <a href="#" ng-click="setSection('assessment')">Start assessment</a>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="metric-box">
+              <h4>Goals Set</h4>
+              <p>{{goalsSet}}</p>
+              <a href="#" ng-click="setSection('goals')">Define goals</a>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="metric-box">
+              <h4>Learning Hours</h4>
+              <p>{{learningHours}}h</p>
+              <a href="#" ng-click="setSection('roadmap')">Begin learning</a>
+            </div>
+          </div>
+        </div>
+        <div class="quick-actions mt-4">
+          <h5>Quick Actions</h5>
+          <a href="#" ng-click="setSection('assessment')">Take Skill Assessment</a>
+          <a href="#" ng-click="setSection('goals')">Set Career Goals</a>
+          <a href="#" ng-click="setSection('gap')">View Gap Analysis</a>
+          <a href="#" ng-click="setSection('roadmap')">Generate Roadmap</a>
+        </div>
+      </div>
+
+      <!-- Skill Assessment -->
+      <div ng-show="section==='assessment'">
+        <h2>Skill Assessment</h2>
+        <p>Evaluate your current skill levels across different areas.</p>
+      </div>
+
+      <!-- Career Goals -->
+      <div ng-show="section==='goals'">
+        <h2>Career Goals</h2>
+        <p>Define where you want to be in your career.</p>
+      </div>
+
+      <!-- Gap Analysis -->
+      <div ng-show="section==='gap'">
+        <h2>Gap Analysis</h2>
+        <p>See what skills you need to develop.</p>
+      </div>
+
+      <!-- Learning Roadmap -->
+      <div ng-show="section==='roadmap'">
+        <h2>Learning Roadmap</h2>
+        <p>Create a personalized learning plan.</p>
+      </div>
+    </main>
+  </div>
+</div>
+
+<footer>
+  <p>© 2026 SkillBridge | <a href="help.html">Help</a></p>
+</footer>
+
+<!-- AngularJS -->
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+<!-- App routing -->
+<script src="../js/app.js"></script>
+<!-- Dashboard controller -->
+<script src="../js/career-development.js"></script>
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
