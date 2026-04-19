@@ -14,7 +14,7 @@
 </head>
 <body class="bg-gradient d-flex align-items-center justify-content-center">
 
-<div class="login-card w-100">
+<div class="login-card w-100" ng-controller="ProfileController">
   <!-- Branding -->
   <div class="text-center mb-4">
     <img src="../assets/logo.png" alt="SkillBridge Logo" class="logo">
@@ -31,18 +31,17 @@
   </div>
 
   <!-- Wizard Steps -->
-  <form class="needs-validation" novalidate id="profileSetupForm">
+  <form ng-submit="saveProfile()" class="needs-validation" novalidate id="profileSetupForm">
     <!-- Step 1 -->
     <div class="step" id="step1">
       <h5>Tell us about your current position</h5>
       <div class="mb-3">
         <label for="currentRole" class="form-label">Current Role / Job Title</label>
-        <input type="text" class="form-control" id="currentRole" placeholder="e.g., Software Developer, Marketing Manager" required>
-        <div class="invalid-feedback">Current role is required.</div>
+        <input type="text" class="form-control" id="currentRole" ng-model="profile.role" required>
       </div>
       <div class="mb-3">
         <label for="experience" class="form-label">Years of Experience</label>
-        <select class="form-select" id="experience" required>
+        <select class="form-select" id="experience" ng-model="profile.experience" required>
           <option value="">Select...</option>
           <option>0–1 years</option>
           <option>1–3 years</option>
@@ -51,11 +50,10 @@
           <option>7–10 years</option>
           <option>10+ years</option>
         </select>
-        <div class="invalid-feedback">Please select your experience.</div>
       </div>
       <div class="mb-3">
         <label for="industry" class="form-label">Industry</label>
-        <select class="form-select" id="industry" required>
+        <select class="form-select" id="industry" ng-model="profile.industry" required>
           <option value="">Select...</option>
           <option>Technology & Software</option>
           <option>Finance & Banking</option>
@@ -67,7 +65,6 @@
           <option>Consulting</option>
           <option>Other</option>
         </select>
-        <div class="invalid-feedback">Please select your industry.</div>
       </div>
       <button type="button" class="btn-skillbridge w-100" id="next1">Next</button>
     </div>
@@ -78,11 +75,11 @@
       <div class="mb-3">
         <label for="skillInput" class="form-label">Add Your Skills</label>
         <div class="input-group">
-          <input type="text" class="form-control" id="skillInput" placeholder="e.g., JavaScript, Project Management, SEO">
-          <button class="btn-skillbridge" type="button" id="addSkillBtn">Add</button>
+          <input type="text" class="form-control" id="skillInput" ng-model="newSkill">
+          <button class="btn-skillbridge" type="button" ng-click="addSkill()">Add</button>
         </div>
         <div id="skillsList" class="mt-2">
-            <div class="invalid-feedback d-block" id="skillsError" style="display:none;">Please add at least one skill.</div>
+          <span ng-repeat="s in profile.skills" class="badge bg-primary me-2 mb-2">{{s}}</span>
         </div>
       </div>
       <div class="d-flex justify-content-between mt-4">
@@ -96,16 +93,17 @@
       <h5>What are your career goals?</h5>
       <div class="mb-3">
         <label for="targetRole" class="form-label">Target Role / Dream Job</label>
-        <input type="text" class="form-control" id="targetRole" placeholder="e.g., Senior Software Engineer, Product Manager" required>
-        <div class="invalid-feedback">Target role is required.</div>
+        <input type="text" class="form-control" id="targetRole" ng-model="profile.targetRole" required>
       </div>
       <div class="mb-3">
         <label for="goalSkillInput" class="form-label">Skills You Want to Learn (optional)</label>
         <div class="input-group">
-          <input type="text" class="form-control" id="goalSkillInput" placeholder="e.g., Machine Learning, Leadership, Data Analysis">
-          <button class="btn-skillbridge" type="button" id="addGoalSkillBtn">Add</button>
+          <input type="text" class="form-control" id="goalSkillInput" ng-model="newGoalSkill">
+          <button class="btn-skillbridge" type="button" ng-click="addGoalSkill()">Add</button>
         </div>
-        <div id="goalSkillsList" class="mt-2"></div>
+        <div id="goalSkillsList" class="mt-2">
+          <span ng-repeat="g in profile.goalSkills" class="badge bg-primary me-2 mb-2">{{g}}</span>
+        </div>
       </div>
       <div class="d-flex justify-content-between mt-4">
         <button type="button" class="btn btn-outline-secondary w-50 me-2" id="back3">Back</button>
@@ -116,9 +114,10 @@
 
   <!-- Footer -->
   <div class="footer-link mt-4">
-    <p>© 2026 SkillBridge | <a href="help.html">Help</a></p>
+    <p>© 2026 SkillBridge | <a href="#!/help">Help</a></p>
   </div>
 </div>
+
 
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
