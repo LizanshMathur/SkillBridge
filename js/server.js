@@ -18,6 +18,11 @@ const cors = require('cors');
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
+// Enable JSON parsing
+app.use(express.json());
+
+// ✅ One‑line CORS setup
+app.use(require('cors')());
 
 // DB connection pool
 const db = mysql.createPool({
@@ -206,7 +211,5 @@ app.get('/api/roadmap/:id', authenticateToken, async (req, res) => {
 });
 
 // ---------------- SERVER ----------------
-
-app.listen(process.env.PORT || 5000, () =>
-  console.log(`SkillBridge backend running on port ${process.env.PORT || 5000}`)
-);
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Running on port ${PORT}`));

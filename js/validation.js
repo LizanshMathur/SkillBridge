@@ -1,3 +1,12 @@
+
+import { API_BASE } from './config.js';
+
+const res = await fetch(`${API_BASE}/api/register`, {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ name, email, password })
+});
+
 // Bootstrap validation
 (function () {
   'use strict';
