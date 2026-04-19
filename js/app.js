@@ -74,6 +74,12 @@ app.controller('RegistrationController', function($scope, $http, $location) {
 // Profile Setup
 app.controller('ProfileController', function($scope, $http, $location) {
   $scope.profile = { skills: [], goalSkills: [] };
+  $scope.currentStep = 1;
+  $scope.progressPercentages = ["33%", "67%", "100%"];
+
+  $scope.goToStep = function(step) {
+    $scope.currentStep = step;
+  };
 
   $scope.addSkill = function() {
     if ($scope.newSkill) {
@@ -96,12 +102,13 @@ app.controller('ProfileController', function($scope, $http, $location) {
         headers: { Authorization: 'Bearer ' + token }
       });
       alert("✅ Profile completed successfully! Redirecting to dashboard...");
-      $location.path('/dashboard'); // ✅ after profile, go to dashboard
+      $location.path('/dashboard');
     } catch (err) {
       alert(err.data?.error || 'Profile save failed');
     }
   };
 });
+
 
 // Dashboard
 app.controller('DashboardController', function($scope, $location, $timeout) {
