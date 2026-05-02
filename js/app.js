@@ -18,10 +18,10 @@ app.config(function($routeProvider) {
       templateUrl: 'dashboard.html',
       controller: 'DashboardController'
     })
-    .when('/career-development', {
-      templateUrl: 'career-development.html',
-      controller: 'CareerController'
-    })
+   .when('/career-development', {
+  templateUrl: 'career-development.html',
+  controller: 'DashboardController'
+})
     .when('/help', {
   templateUrl: 'help.html',
   controller: 'HelpController'
@@ -41,13 +41,25 @@ app.controller('LoginController', function($scope, $http, $location) {
       if (res.status === 200) {
         localStorage.setItem('token', res.data.token);
         alert('Login successful!');
-        $location.path('/profile-setup'); // ✅ go to profile setup first
+
+        const token = res.data.token;
+        const headers = { Authorization: 'Bearer ' + token };
+        const userId = JSON.parse(atob(token.split('.')[1])).id; // decode JWT payload
+
+        // Check if goals exist
+        const goalsRes = await $http.get('http://localhost:5000/api/goals/' + userId, { headers });
+        if (goalsRes.data.length > 0) {
+          $location.path('/career-development'); // ✅ go straight to dashboard
+        } else {
+          $location.path('/profile-setup'); // ✅ only if no goals yet
+        }
       }
     } catch (err) {
       alert(err.data?.error || 'Login failed');
     }
   };
 });
+
 
 // Registration
 app.controller('RegistrationController', function($scope, $http, $location) {
@@ -111,12 +123,8 @@ app.controller('ProfileController', function($scope, $http, $location) {
 
 
 // Dashboard
-app.controller('DashboardController', function($scope, $location, $timeout) {
+app.controller('DashboardController', function($scope) {
   $scope.message = "Welcome to your dashboard!";
-  // Auto‑redirect after 2 seconds
-  $timeout(function() {
-    $location.path('/career-development'); // ✅ then go to career development
-  }, 2000);
 });
 
 // Career Development

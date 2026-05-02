@@ -1,12 +1,9 @@
-
 // Load environment variables first
 require('dotenv').config({ path: __dirname + '/pp.env' });
-   // or '.env' if you renamed it
+// or '.env' if you renamed it
 
 console.log("DB_USER:", process.env.DB_USER);
 console.log("DB_PASS:", process.env.DB_PASS);
-
-
 
 const express = require('express');
 const mysql = require('mysql2/promise');
@@ -17,12 +14,8 @@ const cors = require('cors');
 
 const app = express();
 app.use(bodyParser.json());
-
-// Enable JSON parsing
 app.use(express.json());
 app.use(cors());
-// ✅ One‑line CORS setup
-app.use(require('cors')());
 
 // DB connection pool
 const db = mysql.createPool({
@@ -30,13 +23,13 @@ const db = mysql.createPool({
   user: process.env.DB_USER,
   password: process.env.DB_PASS,
   database: process.env.DB_NAME,
- authPlugins: {
+  authPlugins: {
     mysql_clear_password: () => () => Buffer.from(process.env.DB_PASS)
   }
 });
 
 // JWT secret
-const SECRET = process.env.JWT_SECRET|| 'fallback_secret';
+const SECRET = process.env.JWT_SECRET || 'fallback_secret';
 
 // Middleware to verify token
 function authenticateToken(req, res, next) {
@@ -58,12 +51,16 @@ app.post('/api/register', async (req, res) => {
   const { name, email, password } = req.body;
   try {
     const hashed = await bcrypt.hash(password, 10);
+
+    // Always set role = 'user' by default
     const [result] = await db.query(
-      'INSERT INTO users (name, email, password) VALUES (?, ?, ?)',
-      [name, email, hashed]
+      'INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)',
+      [name, email, hashed, 'user']
     );
+
     res.json({ id: result.insertId, message: 'User registered successfully' });
   } catch (err) {
+    console.error(err);
     res.status(400).json({ error: err.message });
   }
 });
@@ -92,16 +89,17 @@ app.post('/api/login', async (req, res) => {
 
 // ---------------- PROFILE ----------------
 
-// Save profile
+// Save profile (industry + experience only)
 app.post('/api/profile', authenticateToken, async (req, res) => {
-  const { role, industry, experience } = req.body;
+  const { industry, experience } = req.body;
   try {
     await db.query(
-      'UPDATE users SET role=?, industry=?, experience=? WHERE id=?',
-      [role, industry, experience, req.user.id]
+      'UPDATE users SET industry=?, experience=? WHERE id=?',
+      [industry, experience, req.user.id]
     );
     res.json({ message: 'Profile saved successfully' });
   } catch (err) {
+    console.error(err);
     res.status(500).json({ error: err.message });
   }
 });
@@ -144,9 +142,14 @@ app.get('/api/skills/:id', authenticateToken, async (req, res) => {
 
 // ---------------- GOALS ----------------
 
+// Save career goals (only insert if not already set)
 app.post('/api/goals', authenticateToken, async (req, res) => {
   const { target_role, desired_skills } = req.body;
   try {
+    const [rows] = await db.query('SELECT * FROM career_goals WHERE user_id=?', [req.user.id]);
+    if (rows.length > 0) {
+      return res.json({ message: 'Goals already set', goals: rows[0] });
+    }
     await db.query(
       'INSERT INTO career_goals (user_id, target_role, desired_skills) VALUES (?, ?, ?)',
       [req.user.id, target_role, desired_skills]
@@ -157,6 +160,7 @@ app.post('/api/goals', authenticateToken, async (req, res) => {
   }
 });
 
+// Get goals
 app.get('/api/goals/:id', authenticateToken, async (req, res) => {
   const { id } = req.params;
   try {

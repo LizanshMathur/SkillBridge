@@ -390,3 +390,14 @@ footer a:hover {
 .home-footer a:hover {
   text-decoration: underline;
 }
+
+
+.profile-icon {
+  border: 2px solid #ccc;
+  padding: 5px;
+}
+
+.profile-details {
+  text-align: left;
+  font-size: 14px;
+}

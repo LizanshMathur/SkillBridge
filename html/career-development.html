@@ -8,6 +8,8 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
   <!-- Custom CSS -->
   <link rel="stylesheet" href="../css/style.css">
   <!-- Chart.js -->
@@ -25,7 +27,26 @@
       <a href="#" ng-class="{active: section==='goals'}" ng-click="setSection('goals')">Career Goals</a>
       <a href="#" ng-class="{active: section==='gap'}" ng-click="setSection('gap')">Gap Analysis</a>
       <a href="#" ng-class="{active: section==='roadmap'}" ng-click="setSection('roadmap')">Learning Roadmap</a>
+
+          <!-- Profile Icon -->
+<div class="profile-section mt-4 text-center">
+  <a href="#" ng-click="toggleProfile()">
+  <i class="fas fa-user-circle fa-2x"></i>
+</a>
+
+  
+  <!-- Profile Details Dropdown -->
+  <div class="profile-details card mt-2" ng-show="showProfile">
+    <div class="card-body">
+      <h5>{{user.name}}</h5>
+      <p>Email: {{user.email}}</p>
+      <p>Industry: {{user.industry}}</p>
+      <p>Experience: {{user.experience}} years</p>
+    </div>
+  </div>
+</div>
     </nav>
+
 
     <!-- Main Content -->
     <main class="col-md-9 col-lg-10 content">
